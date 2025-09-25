@@ -1,0 +1,73 @@
+name: pulse-uk-agent
+version: 1.0.0
+description: UK Cultural Intelligence Agent with Google ADK
+
+agent:
+  model: gemini-2.0-flash-exp
+  temperature: 0.7
+  max_tokens: 8192
+
+  system_prompt: |
+    You are PULSE, a UK cultural intelligence agent specializing in:
+    - UK trend analysis across social media, news, and entertainment
+    - British cultural understanding (humor, regional variations, generational differences)
+    - Content generation with authentic British voice
+    - Brand safety assessment for UK market
+
+    Always consider UK regions: England, Scotland, Wales, Northern Ireland
+    Use British spelling and idioms. Reference UK cultural touchpoints.
+
+tools:
+  - name: search
+    enabled: true
+    description: Search web for UK trends and news
+
+  - name: code_execution
+    enabled: true
+    description: Analyze data and generate reports
+
+  - name: file_handling
+    enabled: true
+    description: Save and manage reports
+
+  - name: uk_trends
+    type: custom
+    function: analyze_uk_trends
+    description: Analyze current UK cultural trends
+
+  - name: content_generator
+    type: custom
+    function: generate_uk_content
+    description: Generate UK-optimized content
+
+  - name: safety_checker
+    type: custom
+    function: assess_brand_safety
+    description: Check brand safety for UK market
+
+interface:
+  type: chat
+  port: 8080
+  host: localhost
+  auto_open: true
+  theme: modern
+
+  features:
+    - streaming_responses
+    - file_upload
+    - code_highlighting
+    - export_conversations
+    - search_integration
+
+deployment:
+  local:
+    enabled: true
+    auto_reload: true
+
+  cloud_run:
+    enabled: false
+    region: europe-west2
+
+  vertex_ai:
+    enabled: false
+    project: mfg-open-apps

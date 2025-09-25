@@ -1,0 +1,205 @@
+# Google ADK Configuration for PULSE Agent
+apiVersion: adk.google.com/v1
+kind: Agent
+metadata:
+  name: pulse-uk-cultural-intelligence
+  version: 1.0.0
+  description: UK Cultural Intelligence Agent for brand opportunity detection
+
+spec:
+  model:
+    provider: google
+    name: gemini-2.0-flash-exp
+    parameters:
+      temperature: 0.7
+      topP: 0.95
+      topK: 40
+      maxOutputTokens: 8192
+
+  systemPrompt: |
+    You are PULSE, an advanced UK cultural intelligence agent specializing in identifying
+    and analyzing British cultural trends for brand participation opportunities.
+
+    Core capabilities:
+    - Detect emerging UK cultural moments across social media and news
+    - Understand British humor, regional variations, and generational differences
+    - Generate authentic UK content with proper tone and cultural references
+    - Assess brand safety considering UK regulations and sensitivities
+    - Provide actionable recommendations with confidence scores
+
+    Always consider UK-specific context including regional variations, British humor styles,
+    and current cultural sensitivities. Provide structured, actionable insights.
+
+  tools:
+    - name: searchWeb
+      type: web_search
+      config:
+        region: UK
+        language: en-GB
+        sources:
+          - news
+          - social
+          - video
+
+    - name: analyzeText
+      type: text_analysis
+      config:
+        features:
+          - sentiment
+          - entities
+          - topics
+        language: en-GB
+
+    - name: generateContent
+      type: content_generation
+      config:
+        style: uk_english
+        tone: professional_yet_approachable
+        platforms:
+          - twitter
+          - instagram
+          - tiktok
+          - linkedin
+
+  actions:
+    - name: analyzeTrends
+      description: Analyze UK cultural trends
+      input:
+        type: object
+        properties:
+          timeWindow:
+            type: string
+            default: "24h"
+          focusAreas:
+            type: array
+            items:
+              type: string
+      output:
+        type: object
+        properties:
+          trends:
+            type: array
+          opportunities:
+            type: array
+          risks:
+            type: array
+
+    - name: generateUKContent
+      description: Generate UK-optimized social media content
+      input:
+        type: object
+        properties:
+          trend:
+            type: string
+          platform:
+            type: string
+          brandVoice:
+            type: string
+      output:
+        type: object
+        properties:
+          content:
+            type: string
+          hashtags:
+            type: array
+          timing:
+            type: string
+
+    - name: assessBrandSafety
+      description: Evaluate brand safety for UK market
+      input:
+        type: object
+        properties:
+          content:
+            type: string
+          brandGuidelines:
+            type: object
+      output:
+        type: object
+        properties:
+          safetyScore:
+            type: number
+          risks:
+            type: array
+          recommendation:
+            type: string
+
+  workflows:
+    main:
+      triggers:
+        - type: message
+          pattern: ".*"
+      steps:
+        - name: parseRequest
+          action: analyzeText
+          input: "${message}"
+
+        - name: determineIntent
+          condition: "${parseRequest.intent}"
+          branches:
+            trendAnalysis:
+              - action: searchWeb
+                params:
+                  query: "UK trending ${parseRequest.topics}"
+                  limit: 50
+              - action: analyzeTrends
+                input: "${searchWeb.results}"
+
+            contentGeneration:
+              - action: generateUKContent
+                params:
+                  trend: "${parseRequest.trend}"
+                  platform: "${parseRequest.platform}"
+
+            safetyCheck:
+              - action: assessBrandSafety
+                params:
+                  content: "${parseRequest.content}"
+
+        - name: formatResponse
+          action: generateContent
+          params:
+            template: ukCulturalIntelligenceReport
+            data: "${previousSteps}"
+
+  examples:
+    - input: "What UK trends should we watch today?"
+      output: |
+        Top UK Cultural Trends (Past 24 Hours):
+
+        1. Greggs Festive Bake Return
+           - Velocity: Explosive (500% increase)
+           - Opportunity: HIGH (0.95)
+           - Brand angle: Celebrate British food culture
+
+        2. I'm A Celebrity Drama
+           - Velocity: Rising
+           - Opportunity: MEDIUM (0.72)
+           - Risk: Controversial contestants
+
+    - input: "Generate Twitter content for the Greggs trend"
+      output: |
+        Twitter Content (Optimized for UK):
+
+        "The queue for Greggs festive bakes is longer than the queue for the throne 👑🥧
+        What's your record? Ours is 20 minutes and absolutely worth it.
+        #FestiveBakeDay #GreggsMoment"
+
+        Best time: 11:45 AM GMT (pre-lunch rush)
+
+  deployment:
+    environment: production
+    region: europe-west2  # London
+    scaling:
+      min: 1
+      max: 10
+    monitoring:
+      metrics:
+        - requestLatency
+        - trendDetectionAccuracy
+        - contentEngagement
+      alerts:
+        - type: error_rate
+          threshold: 0.05
+        - type: latency_p99
+          threshold: 2000ms

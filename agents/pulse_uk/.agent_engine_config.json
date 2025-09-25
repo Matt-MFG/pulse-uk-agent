@@ -1,0 +1,8 @@
+{
+  "project": "mfg-open-apps",
+  "region": "us-central1",
+  "staging_bucket": "gs://mfg-pulse-uk-agent-staging",
+  "display_name": "PULSE UK Cultural Intelligence Agent",
+  "description": "Advanced UK cultural intelligence agent with real-time data from Reddit, YouTube, and The Guardian.",
+  "absolutize_imports": false
+}
