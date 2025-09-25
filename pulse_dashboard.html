@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PULSE UK Cultural Intelligence Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1>🇬🇧 PULSE UK Cultural Intelligence</h1>
+                <div class="header-controls">
+                    <button id="about-btn" class="about-button">ℹ️ About</button>
+                    <span id="last-update" class="update-time">Loading...</span>
+                    <button id="refresh-btn" class="refresh-button">↻ Refresh</button>
+                    <button id="theme-toggle" class="theme-button">🌙</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- About/Documentation Panel -->
+        <div id="about-panel" class="about-panel" style="display: none;">
+            <div class="about-content">
+                <button class="close-about" onclick="toggleAboutPanel()">✕</button>
+
+                <h2>Welcome to PULSE UK Cultural Intelligence</h2>
+
+                <div class="about-section">
+                    <h3>🎯 Platform Overview</h3>
+                    <p>PULSE (Platform for Understanding Living Social Ecosystems) is an advanced AI-powered cultural intelligence system that monitors, analyzes, and synthesizes real-time UK cultural trends across multiple digital platforms. Built on Google's Agent Engine, PULSE provides unprecedented insights into the UK's cultural zeitgeist through continuous data collection and novel AI synthesis.</p>
+                </div>
+
+                <div class="about-section">
+                    <h3>📊 Data Sources</h3>
+                    <div class="source-info">
+                        <h4>Reddit UK Communities</h4>
+                        <p><strong>Subreddits Monitored:</strong> r/unitedkingdom, r/CasualUK, r/britishproblems, r/AskUK, r/UKPolitics</p>
+                        <p><strong>Data Points:</strong> Trending posts, comment sentiment, engagement metrics, emerging discussions</p>
+                        <p><strong>Update Frequency:</strong> Every 5 minutes</p>
+                    </div>
+
+                    <div class="source-info">
+                        <h4>YouTube UK</h4>
+                        <p><strong>Categories:</strong> News & Politics, Entertainment, Sports, Music, Education</p>
+                        <p><strong>Data Points:</strong> Trending videos, view counts, engagement ratios, comment themes</p>
+                        <p><strong>Regional Focus:</strong> UK-specific content and creators</p>
+                    </div>
+
+                    <div class="source-info">
+                        <h4>The Guardian</h4>
+                        <p><strong>Sections:</strong> UK News, Politics, Culture, Opinion, Sport</p>
+                        <p><strong>Analysis:</strong> Headlines, story velocity, topic clustering, sentiment analysis</p>
+                        <p><strong>Context:</strong> Professional journalism perspective on UK affairs</p>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h3>🧠 Intelligence Capabilities</h3>
+                    <ul>
+                        <li><strong>Cross-Platform Pattern Recognition:</strong> Identifies themes appearing across multiple platforms simultaneously</li>
+                        <li><strong>Viral Velocity Tracking:</strong> Predicts which topics will gain momentum based on early signals</li>
+                        <li><strong>Regional Variation Analysis:</strong> Understands differences between London, Scotland, Wales, and Northern Ireland</li>
+                        <li><strong>Cultural Weather Forecasting:</strong> Predicts mood shifts and cultural trends 24-72 hours ahead</li>
+                        <li><strong>Brand Safety Assessment:</strong> Evaluates opportunities against ASA/Ofcom standards</li>
+                        <li><strong>Semantic Network Mapping:</strong> Visualizes relationships between topics, influencers, and concepts</li>
+                    </ul>
+                </div>
+
+                <div class="about-section">
+                    <h3>🏗️ Technical Architecture</h3>
+                    <div class="architecture-info">
+                        <h4>Core Technology</h4>
+                        <ul>
+                            <li><strong>AI Model:</strong> Google Gemini 2.0 Flash (Experimental)</li>
+                            <li><strong>Framework:</strong> Google Agent Development Kit (ADK)</li>
+                            <li><strong>Deployment:</strong> Google Cloud Agent Engine</li>
+                            <li><strong>APIs:</strong> Reddit API, YouTube Data API v3, Guardian Content API</li>
+                        </ul>
+
+                        <h4>Infrastructure</h4>
+                        <ul>
+                            <li><strong>Cloud Platform:</strong> Google Cloud Platform (GCP)</li>
+                            <li><strong>Service:</strong> Cloud Run (Serverless Container)</li>
+                            <li><strong>Region:</strong> us-central1</li>
+                            <li><strong>Scaling:</strong> Auto-scaling 0-100 instances</li>
+                        </ul>
+
+                        <h4>Development Stack</h4>
+                        <ul>
+                            <li><strong>Backend:</strong> Python 3.12 with ADK Agent Framework</li>
+                            <li><strong>Frontend:</strong> HTML5, CSS3, Vanilla JavaScript</li>
+                            <li><strong>Markdown:</strong> Marked.js for rich text rendering</li>
+                            <li><strong>Proxy:</strong> Node.js CORS proxy for API access</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <h3>🔧 How It Works</h3>
+                    <ol>
+                        <li><strong>Data Collection:</strong> APIs continuously fetch real-time data from UK sources</li>
+                        <li><strong>AI Processing:</strong> Gemini 2.0 analyzes patterns, sentiment, and relationships</li>
+                        <li><strong>Synthesis Engine:</strong> Novel insights generated through cross-platform analysis</li>
+                        <li><strong>Dashboard Updates:</strong> Real-time visualization with 5-minute auto-refresh</li>
+                        <li><strong>Deep Analysis:</strong> Chat interface for detailed exploration of any trend</li>
+                    </ol>
+                </div>
+
+                <div class="about-section">
+                    <h3>📚 Citation Standards</h3>
+                    <p>All insights include Harvard-style citations with:</p>
+                    <ul>
+                        <li>Source platform and specific community/channel</li>
+                        <li>Timestamp (GMT/BST)</li>
+                        <li>Engagement metrics where relevant</li>
+                        <li>Confidence scores (0-100)</li>
+                    </ul>
+                </div>
+
+                <div class="about-section">
+                    <h3>🚀 Use Cases</h3>
+                    <ul>
+                        <li><strong>Brand Strategy:</strong> Identify safe engagement opportunities</li>
+                        <li><strong>Content Creation:</strong> Discover trending topics and formats</li>
+                        <li><strong>Market Research:</strong> Understand UK consumer sentiment</li>
+                        <li><strong>Campaign Planning:</strong> Time launches with cultural moments</li>
+                        <li><strong>Risk Management:</strong> Avoid controversial associations</li>
+                        <li><strong>Competitive Intelligence:</strong> Track competitor mentions and sentiment</li>
+                    </ul>
+                </div>
+
+                <div class="about-footer">
+                    <p><strong>Version:</strong> 1.0.0 | <strong>Last Updated:</strong> January 2025</p>
+                    <p><strong>Developer:</strong> Media Futures Group | <strong>Contact:</strong> matt.marshall@mediafuturesgroup.com</p>
+                    <p><strong>GitHub:</strong> <a href="https://github.com/Matt-MFG/pulse-uk-agent" target="_blank">github.com/Matt-MFG/pulse-uk-agent</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+
+            <!-- Cultural Pulse Monitor -->
+            <div class="dashboard-card" id="pulse-monitor">
+                <div class="card-header">
+                    <h2>📊 Cultural Pulse Monitor</h2>
+                    <span class="card-badge live">LIVE</span>
+                </div>
+                <div class="card-content">
+                    <div class="loading-spinner">
+                        <div class="pulse-loader"></div>
+                        <p>Analyzing UK cultural data...</p>
+                    </div>
+                    <div class="pulse-content" style="display: none;">
+                        <div class="trend-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Viral Velocity Tracker -->
+            <div class="dashboard-card" id="velocity-tracker">
+                <div class="card-header">
+                    <h2>🚀 Viral Velocity Tracker</h2>
+                    <span class="card-badge">TRENDING</span>
+                </div>
+                <div class="card-content">
+                    <div class="loading-spinner">
+                        <div class="pulse-loader"></div>
+                        <p>Calculating viral momentum...</p>
+                    </div>
+                    <div class="velocity-content" style="display: none;">
+                        <div class="velocity-items"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regional Heat Map -->
+            <div class="dashboard-card" id="regional-heat">
+                <div class="card-header">
+                    <h2>🗺️ Regional Variations</h2>
+                    <span class="card-badge">UK-WIDE</span>
+                </div>
+                <div class="card-content">
+                    <div class="loading-spinner">
+                        <div class="pulse-loader"></div>
+                        <p>Mapping regional trends...</p>
+                    </div>
+                    <div class="regional-content" style="display: none;">
+                        <div class="region-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sentiment Weather -->
+            <div class="dashboard-card" id="sentiment-weather">
+                <div class="card-header">
+                    <h2>🌤️ Cultural Weather Report</h2>
+                    <span class="card-badge">FORECAST</span>
+                </div>
+                <div class="card-content">
+                    <div class="loading-spinner">
+                        <div class="pulse-loader"></div>
+                        <p>Generating cultural forecast...</p>
+                    </div>
+                    <div class="weather-content" style="display: none;">
+                        <div class="weather-summary"></div>
+                        <div class="weather-forecast"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emerging Themes -->
+            <div class="dashboard-card" id="emerging-themes">
+                <div class="card-header">
+                    <h2>🔮 Emerging Themes</h2>
+                    <span class="card-badge new">NEW</span>
+                </div>
+                <div class="card-content">
+                    <div class="loading-spinner">
+                        <div class="pulse-loader"></div>
+                        <p>Detecting cross-platform patterns...</p>
+                    </div>
+                    <div class="themes-content" style="display: none;">
+                        <div class="theme-bubbles"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brand Opportunities -->
+            <div class="dashboard-card" id="brand-opportunities">
+                <div class="card-header">
+                    <h2>💡 Brand Opportunities</h2>
+                    <span class="card-badge">INSIGHTS</span>
+                </div>
+                <div class="card-content">
+                    <div class="loading-spinner">
+                        <div class="pulse-loader"></div>
+                        <p>Scanning for opportunities...</p>
+                    </div>
+                    <div class="opportunities-content" style="display: none;">
+                        <div class="opportunity-list"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="chat-section">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h2>💬 Deep Dive Analysis</h2>
+                    <span class="chat-status">Ready</span>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="quick-btn" onclick="quickQuery('Generate detailed UK cultural weather report')">
+                        🌤️ Full Weather Report
+                    </button>
+                    <button class="quick-btn" onclick="quickQuery('Analyze cross-platform patterns in UK')">
+                        🔗 Pattern Analysis
+                    </button>
+                    <button class="quick-btn" onclick="quickQuery('What are the emerging UK cultural movements?')">
+                        🚀 Emerging Movements
+                    </button>
+                    <button class="quick-btn" onclick="quickQuery('Generate brand opportunity analysis')">
+                        💼 Brand Analysis
+                    </button>
+                </div>
+
+                <div class="chat-messages" id="chat-messages"></div>
+
+                <div class="chat-input-container">
+                    <textarea
+                        id="chat-input"
+                        class="chat-input"
+                        placeholder="Ask for deeper analysis on any trend or request custom intelligence..."
+                        rows="3"></textarea>
+                    <button id="send-btn" class="send-button">Send →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="data-sources">
+                    <span>Data Sources:</span>
+                    <span class="source-badge reddit">Reddit UK</span>
+                    <span class="source-badge youtube">YouTube UK</span>
+                    <span class="source-badge guardian">The Guardian</span>
+                </div>
+                <div class="confidence-indicator">
+                    <span>System Confidence: </span>
+                    <span id="confidence-level" class="confidence-high">High</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

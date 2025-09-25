@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PULSE UK Cultural Intelligence Agent</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 500;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #response {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+        .example-queries {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f0f4ff;
+            border-radius: 8px;
+        }
+        .example-queries h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        .example-queries ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .example-queries li {
+            margin: 5px 0;
+            cursor: pointer;
+            color: #764ba2;
+        }
+        .example-queries li:hover {
+            text-decoration: underline;
+        }
+        .error {
+            background: #fee;
+            color: #c00;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇬🇧 PULSE UK Cultural Intelligence Agent</h1>
+
+        <div class="example-queries">
+            <h3>Example Queries (click to use):</h3>
+            <ul>
+                <li onclick="setQuery(this.textContent)">What are the current UK cultural trends?</li>
+                <li onclick="setQuery(this.textContent)">Generate a UK cultural weather report</li>
+                <li onclick="setQuery(this.textContent)">What's trending on UK Reddit today?</li>
+                <li onclick="setQuery(this.textContent)">Show me UK YouTube trends</li>
+                <li onclick="setQuery(this.textContent)">What's in UK news today?</li>
+                <li onclick="setQuery(this.textContent)">Compare trends across UK platforms</li>
+            </ul>
+        </div>
+
+        <div class="input-group">
+            <label for="query">Your Query:</label>
+            <textarea id="query" placeholder="Ask about UK cultural trends, Reddit discussions, YouTube trends, or Guardian news..."></textarea>
+        </div>
+
+        <button onclick="sendQuery()">Send Query</button>
+
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing UK cultural data...</p>
+        </div>
+
+        <div id="response"></div>
+    </div>
+
+    <script>
+        // Use local proxy to avoid CORS issues
+        // If proxy is not running, switch to direct URL
+        const API_URL = 'http://localhost:3001';
+        // Alternative: const API_URL = 'https://pulse-agent-smcqmdg45a-uc.a.run.app';
+
+        function setQuery(text) {
+            document.getElementById('query').value = text;
+        }
+
+        async function sendQuery() {
+            const query = document.getElementById('query').value.trim();
+            if (!query) {
+                alert('Please enter a query');
+                return;
+            }
+
+            const button = document.querySelector('button');
+            const loading = document.getElementById('loading');
+            const responseDiv = document.getElementById('response');
+
+            button.disabled = true;
+            loading.style.display = 'block';
+            responseDiv.innerHTML = '';
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: query })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    responseDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+                } else if (data.response) {
+                    responseDiv.textContent = data.response;
+                } else {
+                    responseDiv.textContent = JSON.stringify(data, null, 2);
+                }
+            } catch (error) {
+                responseDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            } finally {
+                button.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        // Allow Enter key to send query
+        document.getElementById('query').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendQuery();
+            }
+        });
+    </script>
+</body>
+</html>
