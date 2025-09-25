@@ -16,7 +16,7 @@ An advanced AI agent that provides real-time UK cultural intelligence by monitor
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/pulse-uk-agent.git
+git clone https://github.com/Matt-MFG/pulse-uk-agent.git
 cd pulse-uk-agent
 ```
 
@@ -46,7 +46,7 @@ Access the agent at http://localhost:8080
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/pulse-uk-agent.git
+git clone https://github.com/Matt-MFG/pulse-uk-agent.git
 cd pulse-uk-agent
 
 # Copy your .env file or set environment variables
